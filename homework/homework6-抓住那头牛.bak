@@ -1,0 +1,52 @@
+#lang racket
+(require r5rs)
+
+(define len (cons '() '()))
+(define visited (make-vector 100005 0))
+(define (insert-q! lst x)
+  (let ((new-pair (cons x '())))
+    (cond ((null? (car lst)) (set-car! lst new-pair)
+                             (set-cdr! lst new-pair)
+                             lst)
+          (else
+           (set-cdr! (cdr lst) new-pair)
+           (set-cdr! lst new-pair)
+           lst))))
+
+(define (get-to k)
+  (let ((a (car (car len))))
+    (let ((x (car a))
+          (t (cdr a)))
+      (if (= x k)
+          t
+          (begin
+            (vector-set! visited x t)
+            (set-car! len (cdr (car len)))
+            (if (and (> (- x 1) 0)
+                     (= (vector-ref visited (- x 1)) 0))
+                (insert-q! len (cons (- x 1) (+ t 1)))
+                (void))
+            (if (and (< (+ x 1) 100005)
+                     (= (vector-ref visited (+ x 1)) 0))
+                (insert-q! len (cons (+ x 1) (+ t 1)))
+                (void))
+            (if (and (< (* x 2) 10005)
+                     (= (vector-ref visited (* x 2)) 0))
+                (insert-q! len (cons (* x 2) (+ t 1))))
+            (get-to k))))))
+
+(define (myloop)
+  (let ((N (read))
+        (K (read)))
+    (if (eq? N eof)
+        (void)
+        (begin
+          (if (< K N)
+              (displayln (- N K))
+              (begin
+                (insert-q! len (cons N 0))
+                (displayln (get-to K))
+                (set! visited (make-vector 100005 0))))
+          (myloop)))))
+
+(myloop)

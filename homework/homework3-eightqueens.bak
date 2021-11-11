@@ -1,0 +1,16 @@
+#lang racket
+
+(define (eight-quees b)
+  )
+
+(define (myloop)
+  (define (loop n)
+    (if (= n 0)
+        (void)
+        (begin (let ((num (read))))
+               (eight-queens num)
+               (loop (- n 1)))))
+  (let ((a (read)))
+    (loop a)))
+
+(myloop)

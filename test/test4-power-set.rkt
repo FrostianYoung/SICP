@@ -1,0 +1,29 @@
+#lang racket
+
+(define (max a b)
+  (cond ((null? a) a)
+        ((null? b) b)
+        ((< (car a) (car b)) b)
+        ((> (car a) (car b)) a)
+        ((= (car a) (car b)) (max (cdr a) (cdr b)))))
+
+(define (power-set lst n)
+  (define (find-power f-lst ans);f-lst的P(A)记做ans
+    (cond ((null? f-lst) ans)
+          ((pair? (car f-lst)) (find-power (cdr f-lst)
+                                           (append (list (car f-lst)) ans)))
+          ((number? (car f-lst) (find-power (cdr f-lst)
+                                            (append (list (car f-lst)) ans))))
+          (else
+           )))
+  (sort max ans))
+
+(define (myloop)
+  (let ((lst (read))
+        (n (read)))
+    (if (eq? lst eof)
+        (void)
+        (begin
+          (power-set lst n)
+          (myloop)))))
+(myloop)

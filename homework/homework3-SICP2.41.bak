@@ -1,0 +1,34 @@
+#lang racket
+
+    (define (accumulate op init seq)
+      (if (null? seq)
+          init
+          (op (car seq) (accumulate op init (cdr seq)))))
+
+    (define (enumerate-interval a b);枚举算法
+      (if (> a b)
+          '()
+          (cons a (enumerate-interval (+ a 1) b))))
+
+    (define (flatmap proc seq)
+      (accumulate append '() (map proc seq)))
+
+
+(define (tri-num-list n s)
+;code begin
+  (define (eq-s? s a)
+    (if (= s (+ (car a) (cadr a) (caddr a)))
+        #t
+        #f))
+  
+
+;code end
+
+    (define (myloop)
+      (let ((n (read))
+            (s (read)))
+        (if (eq? n eof)
+            (void)
+            (begin (display (tri-num-list n s)) (newline) (myloop)))))
+
+    (myloop)

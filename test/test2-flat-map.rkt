@@ -1,0 +1,15 @@
+#lang racket
+(define (flat-map a)
+  (if (null? a)
+      '()
+      (let ((x (car a)))
+        (if (list? x)
+            (append (flat-map x) (flat-map (cdr a)))
+            (append (list x)(flat-map (cdr a)))))))
+(define (loop)
+  (let ((a (read)))
+    (if (eq? a eof)
+        (void)
+        (begin
+          (displayln (flat-map a))
+          (loop)))))

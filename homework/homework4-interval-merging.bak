@@ -1,0 +1,44 @@
+#lang racket
+
+(define (interval-merging a b)
+  (define (merge-to interval ans);interval(a,b),car ans(c,d)
+    (if (null? ans)
+        (list interval)
+
+    (let ((a (car interval))
+          (b (car (cdr interval)))
+          (c (car (car ans)))
+          (d (car (cdr (car ans)))))
+      (begin
+        ;(displayln interval)
+        ;(displayln ans)
+        ;(displayln a)
+        ;(displayln b)
+        ;(displayln c)
+        ;(displayln d)
+      (cond ((>= a d) (cons (car ans) (merge-to interval (cdr ans))))
+            ((<= b c) (cons interval ans))
+            ((> a c);a>c a<d
+             (if (<= b d)
+                 ans
+                 (merge-to (list c b) (cdr ans))))
+            ((<= a c)
+             (if (<= b d)
+                 (cons (list a d) (cdr ans))
+                 (merge-to (list a b) (cdr ans)))))))))
+  (define (merge-in lst ans)
+    (if (null? lst)
+        ans
+        (merge-in (cdr lst) (merge-to (car lst) ans))))
+  (let ((x (merge-in (cdr a) (list (car a)))))
+    (merge-in b x)))
+
+(define (myloop)
+  (let ((a (read))
+        (b (read)))
+    (if (eq? a eof)
+        (void)
+        (begin
+          (displayln(interval-merging a b))
+          (myloop)))))
+(myloop)

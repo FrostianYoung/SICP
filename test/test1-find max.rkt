@@ -1,0 +1,18 @@
+#lang racket
+(define (loop)
+  (define (findMax m Max)
+    (if (= m 0)
+        (displayln Max)
+        (let ( (num (read) ))
+          (if (> num Max)
+              (findMax (- m 1) num)
+              (findMax (- m 1) Max)))))
+  (define (read_line n)
+    (if (= n 0 )
+        (void)
+        (let ((m (read)))
+          (begin
+            (findMax m 0)
+            (read_line (- n 1))))))
+  (let ((n (read)))
+    (read_line n)))

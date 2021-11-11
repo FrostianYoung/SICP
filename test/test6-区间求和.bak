@@ -1,0 +1,44 @@
+#lang racket
+
+(define len '())
+(define (set-lr l r x)
+  (set! len (cons (list l r x) len)))
+
+(define (sum-lr l r ans lst)
+  (if (null? lst)
+      ans
+      (let ((a (car lst)))
+        (let ((al (car a))
+              (ar (car (cdr a)))
+              (ax (car (cdr (cdr a)))))
+          
+          (cond ((< ar l) (sum-lr l r ans (cdr lst)))
+                ((> al r) (sum-lr l r ans (cdr lst)))
+                ((and (>= al l) (<= al r))
+                 (sum-lr (+ l 1) r (+ ans ax) lst))
+                ((and (<= ar r) (>= ar l))
+                 (sum-lr (+ l 1) r (+ ans ax) lst))
+                (else
+                 (sum-lr (+ l 1) r (+ ans ax) lst)))))))
+
+(define (myloop)
+  (let ((m (read)))
+    (define (loop x)
+      (if (= x 0)
+          (void)
+          (let ((op (read)))
+              (begin
+                (if (= op 0)
+                    (let ((l (read))
+                          (r (read)))
+                      (displayln (sum-lr l r 0 len)))
+                    (let ((l (read))
+                          (r (read))
+                          (x (read)))
+                      (set-lr l r x)))
+                
+              (loop (- x 1))
+              ))))
+    (loop m)))
+
+(myloop)

@@ -1,0 +1,16 @@
+#lang racket
+(define (deep-reverse-tree tree)
+  (if (null? tree)
+      '()
+      (let ((point (car tree)))
+        (if (list? point)
+            (append (deep-reverse-tree (cdr tree)) (list (deep-reverse-tree point)))
+            (append (deep-reverse-tree (cdr tree)) (list point))))))
+(define (loop)
+  (let ((a (read)))
+    (if (eq? a eof)
+        (void)
+        (begin
+          (displayln (deep-reverse-tree a))
+          (loop)))))
+(loop)
